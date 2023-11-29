@@ -1,0 +1,28 @@
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+
+using namespace std;
+
+typedef long long LL;
+
+int qmi(int a, int k, int p)  // 求a^k mod p
+{
+    int res = 1 % p;
+    while (k)//多少次
+    {
+        if (k & 1) res = (LL)res * a % p;//为奇数的时候
+        a = (LL)a * a % p;//下一幂次
+        k >>= 1;//除2
+    }
+    return res;
+}
+
+
+int main()
+{
+    int a, b, p;
+    cin >> a >> b >> p;
+    cout << qmi(a, b, p) << endl;
+    return 0;
+}
