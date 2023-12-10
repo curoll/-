@@ -1,0 +1,53 @@
+给定 n个字符串 s1,s2,…,sn。每个字符串 si 的长度均在 [1,6] 范围内且均由小写字母 a∼j（即前 10 个小写字母）构成。
+现在，我们要在字母 a∼j 和数字 0∼9 之间确立一种字母与数字的一一对应关系，每个字母对应一个数字，不同字母对应的数字不同。
+确立的对应关系需满足：将给定的 n个字符串中的每个字母替换为对应数字后，可以得到 n个不含前导 0的正整数。
+得到的 n 个正整数之和应尽可能小。请你计算并输出得到的 n 个正整数之和的最小可能值。
+输入保证至少存在一种满足条件的对应关系。
+输入格式 第一行包含整数 n。
+接下来 n 行，每行包含一个字符串 si。
+输出格式一个整数，表示得到的 n 个正整数之和的最小可能值。
+数据范围前 3个测试点满足 1≤n≤5。所有测试点满足 1≤n≤1000。
+#include<iostream>
+#include<cstring>
+#include<algorithm>
+/*排序不等式
+  an,bn均是升序排列，顺序和 >= 乱序和 >= 逆序和（其中一组）
+*/
+using namespace std;
+
+const int N =10;
+int n;
+int w[N];
+bool st[N];
+
+int main()
+{
+    scanf("%d", &n);
+    char str[N];
+/*
+ *@brief 获得所有字母的个数，前导为0字母标注
+*/
+    while (n -- )
+    {
+        scanf("%s",str);
+        for(int i = strlen(str) - 1,j=1; i >=0;i--,j=j*10)
+           w[str[i]-'a'] += j;
+          st[str[0]-'a'] = true;
+    }
+//获得可取个数最多前导为0的字母
+    int t = -1;
+    for(int i = 0; i < 10;i++)
+       if(!st[i]&& (t==-1 || w[t] < w[i]))
+         t = i;
+    for(int i=0,j=0;i < 10;i++)
+       if(i != t)
+         w[j++] = w[i];
+    sort(w,w+9);//0的剔除了
+    int res = 0;
+    for(int i = 0,j=9;i < 9;i++,j--)
+       res += w[i]*j;
+
+    printf("%d\n",res);
+
+    return 0;
+}
