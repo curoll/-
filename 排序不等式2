@@ -1,0 +1,49 @@
+给定一个数组 A
+ 和一些查询 Li,Ri,，求数组中第 Li至第 Ri个元素之和。小蓝觉得这个问题很无聊，于是他想重新排列一下数组，使得最终每个查询结果的和尽可能地大。
+蓝想知道相比原数组，所有查询结果的总和最多可以增加多少?
+输入格式
+输入第一行包含一个整数 n
+
+第二行包含 n 个整数 A1,A2,…,An
+，相邻两个整数之间用一个空格分隔。
+
+第三行包含一个整数 m
+ 表示查询的数目。
+
+接下来 m行，每行包含两个整数 Li、Ri，相邻两个整数之间用一个空格分隔。
+
+输出格式
+输出一行包含一个整数表示答案。
+#include <iostream>
+#include <algorithm>
+#define N 100005
+using namespace std;
+
+int n, m, l, r, a[N], b[N];
+long long sum, ans;
+
+int main ()
+{
+    cin >> n;
+    for (int i = 1; i <= n; i ++)
+    {
+        cin >> a[i];
+    }
+    cin >> m;
+    while (m --)
+    {
+        cin >> l >> r, b[l] ++, b[r + 1] --; // 同时处理差分
+    }
+    for (int i = 1; i <= n; i ++)
+    {
+        b[i] += b[i - 1], sum += (long long) a[i] * b[i]; // 先得到数组 c（仍存放在数组 b 中），在顺便统计原来的总和 sum
+    }
+    sort (a + 1, a + n + 1), sort (b + 1, b + n + 1); // 分别排序
+    for (int i = 1; i <= n; i ++)
+    {
+        ans += (long long) a[i] * b[i]; // 加上依次相乘的和
+    }
+    cout << ans - sum; // 答案即是依次相乘总和 - sum
+    return 0;
+}
+
