@@ -1,0 +1,48 @@
+给定一个数组 A和一些查询 Li,Ri，求数组中第 Li至第 Ri个元素之和。
+小蓝觉得这个问题很无聊，于是他想重新排列一下数组，使得最终每个查询结果的和尽可能地大。
+小蓝想知道相比原数组，所有查询结果的总和最多可以增加多少?
+输入格式
+输入第一行包含一个整数 n。
+第二行包含 n个整数 A1,A2,⋅⋅⋅,An，相邻两个整数之间用一个空格分隔。
+第三行包含一个整数 m表示查询的数目。
+接下来 m行，每行包含两个整数 Li、Ri，相邻两个整数之间用一个空格分隔。
+#include<iostream>
+#include<cstring>
+#include<algorithm>
+//排序不等式
+using namespace std;
+
+typedef long long LL;
+
+const int N = 100010;
+
+int n,m;
+int w[N],s[N];
+int main()
+{
+    scanf("%d", &n);
+    for(int i=1;i<=n;i++) scanf("%d",&w[i]);
+
+    scanf("%d", &m);
+    while (m -- )
+    {
+        int l,r;
+        scanf("%d%d",&l,&r);
+        s[l]++,s[r+1]--;
+    }
+    for(int i=1;i<=n;i++)
+       s[i]+=s[i-1];
+
+    LL sum1 = 0;
+    for(int i=1;i<=n;i++)
+       sum1 += (LL)s[i]*w[i];
+
+    LL sum2 = 0;
+    sort(s+1,s+n+1);
+    sort(w+1,w+n+1);
+    for(int i=1;i<=n;i++)
+       sum2 += (LL)s[i]*w[i];
+
+    printf("%lld\n",sum2-sum1);
+    return 0;
+}
